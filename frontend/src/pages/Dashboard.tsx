@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../lib/auth';
 import { api, Shop, Product } from '../lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -7,7 +6,6 @@ import { Store, Package, ShoppingCart, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function Dashboard() {
-  const { user } = useAuth();
   const [shops, setShops] = useState<Shop[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +18,7 @@ export function Dashboard() {
 
         if (myShops.length > 0) {
           const allProducts = await Promise.all(
-            myShops.map(shop => api.getProducts({ shop_id: shop.id }))
+            myShops.map((shop: Shop) => api.getProducts({ shop_id: shop.id }))
           );
           setProducts(allProducts.flat());
         }
